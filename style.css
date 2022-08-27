@@ -12,6 +12,11 @@
   width: 600px;
   height: 600px;
 }
-#player {
+#player,
+#layer1,
+#layer2,
+#layer3,
+#layer4,
+#layer5 {
   display: none;
 }
