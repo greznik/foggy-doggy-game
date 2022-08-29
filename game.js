@@ -7,13 +7,13 @@ import { UI } from './UI.js'
 window.addEventListener('load', () => {
   const canvas = document.getElementById('canvas1')
   const ctx = canvas.getContext('2d')
-  canvas.width = 500
+  canvas.width = 900
   canvas.height = 500
   class Game {
     constructor(width, height) {
       this.width = width
       this.height = height
-      this.groundMargin = 50
+      this.groundMargin = 40
       this.speed = 0
       this.maxSpeed = 2
       this.background = new Background(this)
@@ -24,16 +24,19 @@ window.addEventListener('load', () => {
       this.enemies = []
       this.particles = []
       this.collisions = []
-      this.maxParticles = 50
+      this.floatingMessages = []
+      this.maxParticles = 200
 
       this.enemyTimer = 0
       this.enemyInterval = 1000
       this.debug = false
       this.score = 0
+      this.winningScore = 40
       this.fontColor = 'black'
       this.time = 0
       this.gameOver = false
-      this.maxTime = 10000
+      this.maxTime = 30000
+      this.lives = 5
 
       this.player.currentState = this.player.states[0]
       this.player.currentState.enter()
@@ -55,19 +58,29 @@ window.addEventListener('load', () => {
         if (enemy.markedForDeletion)
           this.enemies.splice(this.enemies.indexOf(enemy), 1)
       })
+      // handle messages
+      this.floatingMessages.forEach((message) => {
+        message.update()
+        if (message.markedForDeletion)
+          this.floatingMessages.splice(this.enemies.indexOf(message), 1)
+      })
       // Particles
       this.particles.forEach((particle, index) => {
         particle.update(deltaTime)
+
         if (particle.markedForDeletion) this.particles.splice(index, 1)
       })
       if (this.particles.length > this.maxParticles) {
-        this.particles = this.particles.slice(0, this.maxParticles)
+        this.particles.length = this.maxParticles
       }
       // Collisions
       this.collisions.forEach((collision, index) => {
         collision.update(deltaTime)
         if (collision.markedForDeletion) this.collisions.splice(index, 1)
       })
+      // this.floatingMessages = this.floatingMessages.filter((message) => {
+      //   !message.markedForDeletion
+      // })
     }
 
     draw(context) {
@@ -75,6 +88,9 @@ window.addEventListener('load', () => {
       this.player.draw(context)
       this.enemies.forEach((enemy) => {
         enemy.draw(context)
+      })
+      this.floatingMessages.forEach((message) => {
+        message.draw(context)
       })
       this.particles.forEach((particle) => {
         particle.draw(context)

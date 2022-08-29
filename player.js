@@ -8,6 +8,7 @@ import {
   Hit,
 } from './playerStates.js'
 import { CollisionAnimation } from './collisionAnimation.js'
+import { FloatingMessage } from './floatingMessages.js'
 
 export class Player {
   constructor(game) {
@@ -22,7 +23,7 @@ export class Player {
     this.frameY = 0
     // fps
     this.maxFrame
-    this.fps = 20
+    this.fps = 10
     this.frameInterval = 1000 / this.fps
     this.frameTimer = 0
     // movement and animation
@@ -39,6 +40,7 @@ export class Player {
       new Diving(this.game),
       new Hit(this.game),
     ]
+    this.currentState = null
   }
 
   update(input, deltaTime) {
@@ -124,8 +126,14 @@ export class Player {
           this.currentState === this.states[5]
         ) {
           this.game.score++
+          this.game.floatingMessages.push(
+            new FloatingMessage('+1', enemy.x, enemy.y, 150, 50),
+          )
         } else {
           this.setState(6, 0)
+          this.game.score -= 5
+          this.game.lives--
+          if (this.game.lives <= 0) this.game.gameOver = true
         }
       }
     })
