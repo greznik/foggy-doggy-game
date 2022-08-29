@@ -20,8 +20,11 @@ window.addEventListener('load', () => {
       this.player = new Player(this)
       this.input = new InputHandler(this)
       this.UI = new UI(this)
+
       this.enemies = []
       this.particles = []
+      this.maxParticles = 50
+
       this.enemyTimer = 0
       this.enemyInterval = 1000
       this.debug = true
@@ -51,6 +54,9 @@ window.addEventListener('load', () => {
         particle.update(deltaTime)
         if (particle.markedForDeletion) this.particles.splice(index, 1)
       })
+      if (this.particles.length > this.maxParticles) {
+        this.particles = this.particles.slice(0, this.maxParticles)
+      }
     }
 
     draw(context) {

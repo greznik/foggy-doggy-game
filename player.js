@@ -41,10 +41,12 @@ export class Player {
     if (this.x < 0) this.x = 0
     if (this.x > this.game.width - this.width)
       this.x = this.game.width - this.width
+
     // Vertical
     this.y += this.vy
     if (!this.onGround()) this.vy += this.weight
     else this.vy = 0
+
     // Sprite animation
     if (this.frameTimer > this.frameInterval) {
       this.frameTimer = 0
