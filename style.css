@@ -21,6 +21,7 @@
 #enemy_fly,
 #enemy_plant,
 #enemy_spider_big,
+#collisionAnimation,
 #fire {
   display: none;
 }
