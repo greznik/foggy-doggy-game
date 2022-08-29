@@ -47,8 +47,12 @@ window.addEventListener('load', () => {
       })
     }
     addEnemy() {
+      if (this.speed > 0 && Math.random() < 0.5) {
+        this.enemies.push(new GroundEnemy(this))
+      } else if (this.speed > 0) {
+        this.enemies.push(new ClimbingEnemy(this))
+      }
       this.enemies.push(new FlyingEnemy(this))
-      console.log(this.enemies)
     }
   }
 
